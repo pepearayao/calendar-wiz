@@ -17,3 +17,8 @@ See `docs/agents/issue-tracker.md`.
 
 The design is planned as a `/wayfinder` map — a GitHub issue labelled `wayfinder:map`, with
 child issues as tickets. See the map issue for the current frontier.
+
+### Docs
+
+- `docs/adr/` — architecture decision records (e.g. `0001-aggregation-architecture.md`).
+- `docs/research/` — research summaries produced by wayfinder research tickets.
