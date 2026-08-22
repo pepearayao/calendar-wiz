@@ -37,7 +37,7 @@ Both the sub-issue and issue-dependency endpoints were verified working on this 
   `gh api --method POST repos/<owner>/<repo>/issues/<child>/dependencies/blocked_by -F issue_id=<blocker-db-id>`
   where `<blocker-db-id>` is the blocker's numeric **database id** (not `#number`, not `node_id`).
   Read the live gate with `gh api repos/<owner>/<repo>/issues/<n> --jq .issue_dependencies_summary.blocked_by` (counts open blockers). A brief replication lag on read-after-write is possible; re-read to confirm.
-- **Frontier query**: list the map's open children, drop any with `blocked_by > 0` or an assignee; first in map (creation) order wins.
-  `gh api repos/<owner>/<repo>/issues/<map>/sub_issues --jq '[.[] | select(.state=="open")]'` then filter.
+- **Frontier query**: the map's open children with no open blocker and no assignee; first in map (creation) order wins. Verified command:
+  `gh api repos/<owner>/<repo>/issues/<map>/sub_issues --jq '[.[] | select(.state=="open" and .issue_dependencies_summary.blocked_by==0 and (.assignee==null)) | {number, title}] | .[]'`
 - **Claim**: `gh issue edit <n> --add-assignee @me` — the session's first write.
 - **Resolve**: `gh issue comment <n> --body "<answer>"`, then `gh issue close <n>`, then append a context pointer (gist + link) to the map's Decisions-so-far.
