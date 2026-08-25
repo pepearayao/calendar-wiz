@@ -7,6 +7,8 @@ exposes shareable **booking links**. Built to learn Kotlin; a mobile app may fol
 **Status: design complete — ready to build.** Planned with `/wayfinder`; the design lives in
 `docs/`.
 
+**Resuming after a break? → [STATUS.md](STATUS.md)** — where we stopped and what's next.
+
 ## Start here
 
 → **[docs/BUILD.md](docs/BUILD.md)** — the build guide: what to build, in what order, and the
