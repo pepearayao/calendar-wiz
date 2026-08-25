@@ -30,6 +30,7 @@ invariants not to get wrong.
 - [ADR 0002 — Event data model](docs/adr/0002-event-data-model.md): recurrence, timezones, cross-source dedup.
 - [ADR 0003 — Busy-mirroring](docs/adr/0003-busy-mirroring.md): direction, privacy, block strength, loop control.
 - [ADR 0004 — Booking rules](docs/adr/0004-booking-rules.md): generatable links, availability, no double-booking.
+- [ADR 0005 — Deployment on Hermes](docs/adr/0005-deployment.md): right-sized Compose + Caddy + Watchtower on the shared box (no Swarm).
 
 **Research**
 - [Existing tools survey](docs/research/existing-tools-survey.md)

@@ -80,9 +80,19 @@ Each phase is independently demoable. Build in order; later phases assume earlie
 - **Atomic slot-claim** at confirmation (re-check + claim before write — no double-booking); write to the per-link Gmail destination with the booker as attendee; the booking then mirrors.
 - **Done when:** sharing a link lets someone book an open slot that lands and mirrors everywhere.
 
-### Phase 5 — Run it 24/7
-- Deployment on the always-on box at the user's domain; secret storage (refresh tokens, Proton URL, SMTP creds); webhook renewal (Google `watch`, Graph subscriptions) + periodic full re-sync fallback; **Proton post-sync reconcile** (flag a booking that a later Proton pull reveals as conflicting); abuse controls on the public page.
-- **Done when:** it runs unattended and heals across provider hiccups and token expiry.
+### Phase 5 — Run it 24/7 on Hermes
+- **Deployment is decided in [ADR 0005](adr/0005-deployment.md):** right-sized for the shared
+  `hermes-server` box — **plain Docker Compose** (no Swarm), image built in CI and pushed to
+  **ghcr.io**, **Watchtower** auto-pulls on merge, **Caddy on 443** for TLS (port 80 stays munich's),
+  `-Xmx256m` + a **2 GB swapfile** (1.9 GB box), reuse munich's `autoheal`. Do **not** replicate
+  rondia's Swarm/Traefik/webhook stack.
+- Secret storage (host `.env`): refresh tokens, Proton share URL, SMTP/DKIM creds, ghcr token.
+- Webhook renewal (Google `watch`, Graph subscriptions) + periodic full re-sync fallback;
+  **Proton post-sync reconcile** (flag a booking a later Proton pull reveals as conflicting); abuse
+  controls on the public page.
+- **Open items before first deploy** (ADR 0005): hostname/DNS (→ TLS challenge method), ghcr image
+  visibility, swap added, email/DKIM domain.
+- **Done when:** merge → CI → Watchtower → live, running unattended, without disturbing munich.
 
 ## Invariants — do not get these wrong
 
