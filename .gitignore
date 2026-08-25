@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Secrets / local env (ADR 0005: secrets live in a host .env, never in the repo)
+.env
+*.local
+
+# Logs
+*.log
