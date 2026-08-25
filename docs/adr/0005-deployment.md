@@ -33,10 +33,10 @@ single user, low volume. Match the deploy to that, and stay off munich's toes.
    new tag and restarts calendar-wiz.
    - **Scope it so it can never touch munich:** `WATCHTOWER_LABEL_ENABLE=true` + the enable label
      (`com.centurylinklabs.watchtower.enable=true`) on **calendar-wiz only**.
-   - **Private image needs registry auth on the box.** Either publish the image (it's the code image,
-     not the data) **or** write a ghcr read token to `/home/deploy/.docker/config.json` and mount it
-     into Watchtower. Without it Watchtower **401s silently and never updates** — the dangerous
-     failure mode.
+   - **The image is private (decided).** A ghcr **read token** (classic PAT with `read:packages`, or
+     a fine-grained token) must live at `/home/deploy/.docker/config.json` and be mounted into
+     Watchtower; the same login lets the box pull manually. Without it Watchtower **401s silently and
+     never updates** — the dangerous failure mode.
 4. **TLS on 443 only, leaving port 80 to munich.** Add **Caddy** bound to 443, reverse-proxying the
    calendar-wiz host → the Ktor container.
    - Caddy grabs `:80` by default (redirects + HTTP-01). **Disable that** (`auto_https disable_redirects`
@@ -73,11 +73,11 @@ single user, low volume. Match the deploy to that, and stay off munich's toes.
 ## Open items — resolve before the first deploy
 
 - **Hostname — decided: `book.pepearayao.com`** (booking URLs `book.pepearayao.com/{handle}/{context}/{duration}`,
-  the `/agenda` segment dropped). Remaining: add the `A` record → 5.161.43.242, and confirm where
-  `pepearayao.com` DNS is hosted (needed for the record; also enables DNS-01 as a fallback).
-- **ghcr image visibility** — public, or private with a token on the box (decision 3).
-- **Swap added** on Hermes (decision 5).
-- **Email / DKIM sending domain** for the iMIP invite writes (SPF/DKIM/DMARC) — from the map fog.
+  the `/agenda` segment dropped). The user is adding the `A` record → 5.161.43.242.
+- **ghcr image — decided: private.** Needs a `read:packages` token at `/home/deploy/.docker/config.json`,
+  mounted into Watchtower (decision 3).
+- **Swap** — a 2 GB swapfile on Hermes, still to be added before first deploy (decision 5).
+- **Email / DKIM sending domain** for the iMIP invite writes (SPF/DKIM/DMARC) — still open; from the map fog.
 
 ## Consequences
 
