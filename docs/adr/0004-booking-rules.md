@@ -19,9 +19,12 @@ Booking links are **URLs the user generates by sharing**, not entries hand-creat
 scheme lives under the user's own domain:
 
 ```
-https://<user-domain>/agenda/{handle}/{context}/{duration}
-e.g. https://pepearayao.com/agenda/rondia/entremed/30
+https://book.pepearayao.com/{handle}/{context}/{duration}
+e.g. https://book.pepearayao.com/rondia/entremed/30
 ```
+
+(The booking host is the `book.` subdomain — see [ADR 0005](./0005-deployment.md) — so the earlier
+`/agenda` path segment is dropped; the subdomain already conveys it.)
 
 - **`{handle}`** is a fixed personal handle segment (e.g. `rondia`) — a stable, shareable identity in
   the path.

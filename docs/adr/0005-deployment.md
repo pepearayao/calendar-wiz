@@ -43,7 +43,9 @@ single user, low volume. Match the deploy to that, and stay off munich's toes.
      or an explicit `http_port` override) and use **TLS-ALPN-01** on 443 — **or** **DNS-01** on the
      `pepearayao.com` zone (needs no inbound port; the safer option if DNS is on a supported provider).
    - **Verify against current Caddy docs before applying: a misconfig that grabs `:80` breaks munich.**
-   - Final challenge method is pending the DNS answer (open item below).
+   - **Host = `book.pepearayao.com` (decided); challenge = TLS-ALPN-01 on 443.** Needs only an
+     `A` record `book.pepearayao.com → 5.161.43.242` and inbound 443 (free). DNS-01 stays a fallback
+     if inbound ACME on 443 ever fails.
 5. **Memory discipline — the main risk.**
    - **Add a 2 GB swapfile on Hermes _before_ the first deploy.** There is currently zero swap.
    - JVM ceiling is an **absolute `-Xmx256m`**, *not* `MaxRAMPercentage` — percentage-of-total would
@@ -70,8 +72,9 @@ single user, low volume. Match the deploy to that, and stay off munich's toes.
 
 ## Open items — resolve before the first deploy
 
-- **Hostname + DNS** — apex `pepearayao.com` (HTTPS-only) or a subdomain (e.g. `cal.pepearayao.com`)?
-  Where is `pepearayao.com` DNS hosted? → decides **TLS-ALPN-01 vs DNS-01** in decision 4.
+- **Hostname — decided: `book.pepearayao.com`** (booking URLs `book.pepearayao.com/{handle}/{context}/{duration}`,
+  the `/agenda` segment dropped). Remaining: add the `A` record → 5.161.43.242, and confirm where
+  `pepearayao.com` DNS is hosted (needed for the record; also enables DNS-01 as a fallback).
 - **ghcr image visibility** — public, or private with a token on the box (decision 3).
 - **Swap added** on Hermes (decision 5).
 - **Email / DKIM sending domain** for the iMIP invite writes (SPF/DKIM/DMARC) — from the map fog.
